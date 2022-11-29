@@ -1,0 +1,28 @@
+http:
+  routers:
+    http-app:
+      entryPoints:
+        - web
+#      middlewares:
+#        - https-redirect
+      rule: "HostRegexp(`{subdomain:.*}`)"
+      service: app
+
+    https-app:
+      entryPoints:
+        - websecure
+      rule: "HostRegexp(`{subdomain:.*}`)"
+      service: app  
+      tls: {}
+
+#  middlewares:
+#    https-redirect:
+#      redirectScheme:
+#        scheme: https
+#        permanent: true
+
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - url: '{{env "HOST"}}'

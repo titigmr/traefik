@@ -1,0 +1,22 @@
+tcp:
+  routers:
+    to-http:
+      entryPoints:
+        - web
+      rule: "HostSNI(`*`)"
+      service: app
+
+    to-https:
+      entryPoints:
+        - websecure
+      rule: "HostSNI(`*`)"
+      service: app
+      tls:
+        passthrough: true
+
+  services:
+    app:
+      loadBalancer:
+        servers:
+          - address: "IP:PORT"
+          - address: "IP:PORT"

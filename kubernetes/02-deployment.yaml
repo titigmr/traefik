@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  selector:
+    matchLabels:
+      app: app
+  revisionHistoryLimit: 0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      volumes:
+        - name: dynamic-vol
+          configMap:
+            name: dynamic
+      containers:
+      - image: traefik
+        ports:
+        - containerPort: 80
+        name: traefik
+        env:
+        - name: TRAEFIK_SERVERSTRANSPORT_INSECURESKIPVERIFY
+          value: "true"
+        - name: TRAEFIK_ENTRYPOINTS_web_ADDRESS
+          value: ":80"
+        - name: TRAEFIK_ENTRYPOINTS_websecure_ADDRESS
+          value: ":443"
+        - name: TRAEFIK_PROVIDERS_FILE_DIRECTORY
+          value: "/traefik/"
+        - name: TRAEFIK_PROVIDERS_FILE_WATCH
+          value: "true"
+        - name: TRAEFIK_LOG_LEVEL 
+          value: "INFO"
+        - name: TRAEFIK_ACCESSLOG
+          value: "true"
+        - name: TRAEFIK_ACCESSLOG_FORMAT
+          value: "common"
+        - name: TRAEFIK_ACCESSLOG_FILEPATH
+          value:  "/logs/access.log"
+        - name: TRAEFIK_LOG_FILEPATH
+          value: "/logs/traefik.log"
+        - name: TZ
+          value: "Europe/Paris"
+
+        # if use internal http proxy
+        #- name: HTTP_PROXY
+        #  value: "http://..."
+        #- name: HTTPS_PROXY
+        #  value: "http://..."
+        #- name: NO_PROXY
+        #  value: "localhost"
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 60
+
+        resources: {}
+        volumeMounts:
+        - name: dynamic-vol
+          mountPath: /traefik
+

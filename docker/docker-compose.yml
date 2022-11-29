@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    image: traefik:v2.6
+    container_name: traefik
+    restart: unless-stopped
+    volumes:
+      - ./conf/:/etc/traefik/conf/
+      - /var/log/traefik:/logs
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      # entrypoint web, websecure metrics and dashboard
+      TRAEFIK_ENTRYPOINTS_web_ADDRESS: :80
+      TRAEFIK_ENTRYPOINTS_websecure_ADDRESS: :443
+      # use file provider
+      TRAEFIK_PROVIDERS_FILE_DIRECTORY: "/etc/traefik/conf/"
+      TRAEFIK_PROVIDERS_FILE_WATCH: "true"
+      # logs
+      TRAEFIK_LOG_LEVEL: "INFO"
+      TRAEFIK_ACCESSLOG: "true"
+      TRAEFIK_ACCESSLOG_FORMAT: "common"
+      TRAEFIK_ACCESSLOG_FILEPATH: "/logs/access.log"
+      TRAEFIK_LOG_FILEPATH: "/logs/traefik.log"
+      TZ: "Europe/Paris"
+      HOST: "http://..."
