@@ -4,10 +4,12 @@ Some examples to deploy traefik as local reverse proxy or loadbalancer.
 
 ## Docker
 
+```bash
 ├── docker
 │   ├── conf
 │   │   └── dynamic_conf.yml
 │   └── docker-compose.yml
+```
 
 Add in docker-compose the value of `HOST` env var, and run `docker-compose up -d`
 
@@ -15,10 +17,12 @@ Add in docker-compose the value of `HOST` env var, and run `docker-compose up -d
 
 ## Kubernetes
 
+```bash
 ├── kubernetes
 │   ├── 01-configmap.yaml
 │   ├── 02-deployment.yaml
 │   └── 03-svc.yaml
+```
 
 Modify the dynamic config in `kubernetes/01-configmap.yaml`, and change the service url for your apps, then run:
 
