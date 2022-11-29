@@ -12,7 +12,7 @@ services:
       - 80:80
       - 443:443
     environment:
-      # entrypoint web, websecure metrics and dashboard
+      # entrypoint web, websecure
       TRAEFIK_ENTRYPOINTS_web_ADDRESS: :80
       TRAEFIK_ENTRYPOINTS_websecure_ADDRESS: :443
       # use file provider
@@ -24,5 +24,6 @@ services:
       TRAEFIK_ACCESSLOG_FORMAT: "common"
       TRAEFIK_ACCESSLOG_FILEPATH: "/logs/access.log"
       TRAEFIK_LOG_FILEPATH: "/logs/traefik.log"
+      # other
       TZ: "Europe/Paris"
       HOST: "http://..."
