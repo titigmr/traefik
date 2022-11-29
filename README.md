@@ -26,5 +26,5 @@ Add in docker-compose the value of `HOST` env var, and run `docker-compose up -d
 
 Modify the dynamic config in `kubernetes/01-configmap.yaml`, and change the service url for your apps, then run:
 
-``kubectl apply -f ./kubernetes/`
+`kubectl apply -f ./kubernetes/`
 
